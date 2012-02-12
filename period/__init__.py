@@ -4,10 +4,24 @@
 from period.iso8601 import parse_date as parse_iso8601
 
 def parse(string):
-    obj = Period()
-    obj.starting = parse_iso8601(string)
+    obj = Period(string, parse_iso8601(string))
     return obj
 
 
 class Period(object):
-    starting = None
+
+    def __init__(self, expression, starting, until=None, tzinfo=None, recur=None):
+        self.expression = expression
+        self.starting = starting
+        self.until = until
+        self.tzinfo = tzinfo
+        self.recur = recur
+
+    def __repr__(self):
+        tmpl = ('<{mod}.{cls} (expression="{expr}", starting={starting}, until={until}, '
+                'tzinfo={tzinfo}, recur={recur})>')
+        mod = type(self).__module__
+        cls = type(self).__name__
+        return tmpl.format(mod=mod, cls=cls, expr=self.expression,
+                           starting=self.starting, until=self.until,
+                           tzinfo=self.tzinfo, recur=self.recur)
