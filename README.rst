@@ -34,6 +34,8 @@ Key features
 ------------
 
  * Forces UTC, if no tzinfo is given, UTC is used.  If a tzinfo is applied, it's converted to UTC
+   This also is implemented in an iso8601 compatible way by assuming that applied dates
+   are given in local time if no timezone is given.
  * Compatible with Python 3.2+ and Python 2.7+ (maybe 2.6+ I cannot test this right now)
  * Simple API that does what it's supposed to do without any clutter
  * Add features if needed, do not clutter the API with features no one uses.
