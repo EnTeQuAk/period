@@ -1,0 +1,12 @@
+*.pyo
+*.pyc
+.DS_Store
+.venv
+.venv_hook
+*.min.js
+*.swo
+*.swp
+*.orig
+*.egg-info
+.tox
+*~
