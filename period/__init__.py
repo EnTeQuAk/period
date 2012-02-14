@@ -1,10 +1,10 @@
 #-*- coding: utf-8 -*-
+from period.parser import Parser
 
-#TODO: for now only an alias for iso8601 parsing, will be expanded later.
-from period.iso8601 import parse_date as parse_iso8601
 
 def parse(string):
-    obj = Period(string, parse_iso8601(string))
+    parser = Parser()
+    obj = Period(string, parser.parse(string))
     return obj
 
 
