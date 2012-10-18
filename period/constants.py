@@ -1,9 +1,64 @@
 import re
 import itertools
-from datetime import date, timedelta
+from datetime import date, timedelta, time
+
 
 #: Regular expressions that can be tagged, sorted by priority.
 EXPRESSIONS = []
+
+
+# ISO 8601 time representations allow decimal fractions on least
+#    significant time component. Command and Full Stop are both valid
+#    fraction separators.
+#    The letter 'T' is allowed as time designator in front of a time
+#    expression.
+#    Immediately after a time expression, a time zone definition is
+#      allowed.
+#    a TZ may be missing (local time), be a 'Z' for UTC or a string of
+#    +-hh:mm where the ':mm' part can be skipped.
+# TZ information patterns:
+#    ''
+#    Z
+#    +-hh:mm
+#    +-hhmm
+#    +-hh =>
+#    isotzinfo.TZ_REGEX
+
+TZ_REGEX = r"(?P<tzname>(Z|(?P<tzsign>[+-])"\
+           r"(?P<tzhour>[0-9]{2})(:(?P<tzmin>[0-9]{2}))?)?)"
+
+EXPRESSIONS.extend([
+    # 1. complete time:
+    #    hh:mm:ss.ss ... extended format
+    ('complete_time', r"T?(?P<hour>[0-9]{2}):"
+                      r"(?P<minute>[0-9]{2}):"
+                      r"(?P<second>[0-9]{2}([,.][0-9]+)?)"
+                      + TZ_REGEX),
+
+
+    #    hhmmss.ss ... basic format
+    ('basic_time', r"T?(?P<hour>[0-9]{2})"
+                   r"(?P<minute>[0-9]{2})"
+                   r"(?P<second>[0-9]{2}([,.][0-9]+)?)"
+                   + TZ_REGEX),
+
+    # 2. reduced accuracy:
+    #    hh:mm.mm ... extended format
+    ('reduced_accuracy_time', r"T?(?P<hour>[0-9]{2}):"
+                              r"(?P<minute>[0-9]{2}([,.][0-9]+)?)"
+                              + TZ_REGEX),
+
+    #    hhmm.mm ... basic format
+    ('basic_time', r"T?(?P<hour>[0-9]{2})"
+                   r"(?P<minute>[0-9]{2}([,.][0-9]+)?)"
+                   + TZ_REGEX),
+
+    #    hh.hh ... basic format
+    ('basic_time', r"T?(?P<hour>[0-9]{2}([,.][0-9]+)?)"
+                   + TZ_REGEX)
+])
+
+
 
 #: Compile set of regular expressions to parse ISO dates.
 #:
@@ -74,6 +129,7 @@ EXPRESSIONS.extend([
     ('year_date', r"(?P<sign>[+-]){0,1}(?P<year>[0-9]{4,6})"),
 
 ])
+
 
 
 # Compile all regular expressions, eases debugging and boosts
