@@ -74,7 +74,7 @@ class Parser(object):
                               int(groups['tzmin'] or 0))
         if 'second' in groups:
             second = Decimal(groups['second'])
-            microsecond = (second - int(second)) * long(1e6)
+            microsecond = (second - int(second)) * Decimal(1e6)
             # int(...) ... no rounding
             # to_integral() ... rounding
             return time(int(groups['hour']), int(groups['minute']),
@@ -82,7 +82,7 @@ class Parser(object):
         if 'minute' in groups:
             minute = Decimal(groups['minute'])
             second = (minute - int(minute)) * 60
-            microsecond = (second - int(second)) * long(1e6)
+            microsecond = (second - int(second)) * Decimal(1e6)
             return time(int(groups['hour']), int(minute), int(second),
                         microsecond.to_integral(), tzinfo)
         else:
@@ -90,6 +90,6 @@ class Parser(object):
         hour = Decimal(groups['hour'])
         minute = (hour - int(hour)) * 60
         second = (minute - int(minute)) * 60
-        microsecond = (second - int(second)) * long(1e6)
+        microsecond = (second - int(second)) * Decimal(1e6)
         return time(int(hour), int(minute), int(second),
                     microsecond.to_integral(), tzinfo)
