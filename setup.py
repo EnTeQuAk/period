@@ -13,7 +13,7 @@ setup(
     long_description='',
     author='Christopher Grebs',
     author_email='cg@webshox.org',
-    url='',
+    url='https://github.com/EnTeQuAk/period',
     packages=['period'],
     package_data={'': ['LICENSE']},
     include_package_data=True,
